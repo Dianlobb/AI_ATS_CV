@@ -14,9 +14,13 @@ upload_file, job_role, job_description, analyze_button = render_sidebar()
 
 if upload_file and analyze_button:
     try:
-        response = process_resume(upload_file, job_role, job_description)
-        from ui.result_ui import display_results
-        display_results(response)
+        with st.spinner('🔄 Processing your resume... Please wait.'):
+            response = process_resume(upload_file, job_role, job_description)
+            
+        with st.spinner('📊 Displaying results...'):
+            from ui.result_ui import display_results
+            display_results(response)
+            
     except Exception as e:
         logger.error(f"Error en procesamiento: {str(e)}")
         st.error("Ocurrió un error durante el análisis. Por favor, inténtalo de nuevo.")
